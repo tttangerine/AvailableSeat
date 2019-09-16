@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- 实心填充 -->
+    <solid android:color="@color/focus_LivingCoral" />
+
+    <!--仅右边圆角-->
+    <corners
+        android:bottomRightRadius="@dimen/dp_12"
+        android:topRightRadius="@dimen/dp_12"/>
+
+</shape>

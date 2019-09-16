@@ -1,0 +1,60 @@
+<resources>
+    <string name="app_name">嘀嗒有座</string>
+
+    <string name="description">description</string>
+
+    <string name="loading">正在加载数据</string>
+
+    <string name="login_view">账号登录</string>
+    <string name="create_account">若账号未注册将自动创建</string>
+    <string name="account">昵称</string>
+    <string name="password">密码</string>
+    <string name="login">登录</string>
+    <string name="login_change_info">修改信息</string>
+    <string name="change_info">确定修改</string>
+
+    <string name="select_seat_title">选座</string>
+    <string name="before_select_seat">请先选座</string>
+    <string name="select_seat">确认选座</string>
+    <string name="book_select">预约座位</string>
+
+    <string name="home">主页</string>
+    <string name="book">预约</string>
+    <string name="select">选座</string>
+    <string name="quick_select">推荐</string>
+    <string name="card_building">图书馆</string>
+    <string name="card1_room">201</string>
+    <string name="card2_room">301</string>
+    <string name="card_seats">空座数：30</string>
+    <string name="card_auto">空座数：%1$d</string>
+
+    <string name="timer">计时</string>
+    <string name="leave">暂时离开</string>
+    <string name="start_using">开始使用</string>
+    <string name="end_using">不再使用</string>
+    <string name="btn_position">座位</string>
+    <string name="timer_num">%1$d:%2$d</string>
+    <string name="default_num">00:00</string>
+
+    <string name="nav_header_title">A</string>
+    <string name="nav_header_subtitle">违规次数：%1$d</string>
+    <string name="nav_change_name">修改昵称</string>
+    <string name="nav_change_pw">修改密码</string>
+    <string name="nav_use_info">使用说明</string>
+    <string name="nav_use_info_title">说明</string>
+    <string name="info_title1">预约座位</string>
+    <string name="info_content1">当您不在教室时，请使用预约座位功能。预约后20分钟内，座位将标识为等待状态，他人无法选中。当您到达教室后，请点击“开始使用”按钮，结束倒计时。当您在20分钟内无法到达教室时，请及时点击“不再使用”取消预约，预约超时后，系统将记一次违规。</string>
+    <string name="info_title2">自主选座</string>
+    <string name="info_content2">当您已经到达教室时，请使用自主选座功能。确定选择座位后，座位将标识为使用状态，他人无法选中。</string>
+    <string name="info_title3">暂时离开</string>
+    <string name="info_content3">当您需要暂时离开座位时，请点击“暂时离开”按钮，座位将标识为等待状态，他人无法选中。当您回到座位后，请点击“开始使用”按钮，结束倒计时。当您在20分钟内无法回到座位时，请点击“不再使用”取消占用，否则超时后，系统将记一次违规。</string>
+    <string name="info_title4">不再使用</string>
+    <string name="info_content4">当您不再使用座位时，请点击“不再使用”，将座位标识为可用状态，允许被他人选中。</string>
+    <string name="info_title5">违规说明</string>
+    <string name="info_content5">当预约或暂时离开的倒计时超时后，系统将记一次违规，记三次违规后用户将自动登出，并在一定时间段内无法再次登录。\n当您预约的座位被他人占用时，请与在场教职工联系，协商解决。</string>
+    <string name="nav_app_info">关于</string>
+    <string name="my_info">Designed &#038; developed by 龙族少年团队</string>
+    <string name="bug_info">bug反馈</string>
+    <string name="bug_submit">QQ: 2960909443</string>
+
+</resources>

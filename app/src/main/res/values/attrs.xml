@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="ChooseSeatView">
+        <attr name="seat_checked" format="reference" />
+        <attr name="seat_used" format="reference" />
+        <attr name="seat_available" format="reference" />
+        <attr name="seat_waiting" format="reference" />
+
+        <attr name="overview_checked" format="color" />
+        <attr name="overview_used" format="color" />
+        <attr name="overview_waiting" format="color" />
+
+        <attr name="txt_color" format="color"/>
+    </declare-styleable>
+
+</resources>

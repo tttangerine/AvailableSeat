@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@android:color/white">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_240"
+        android:clipChildren="false"
+        tools:ignore="UselessParent">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/dp_30"
+            android:background="@color/bg_ViridianGreen"
+            android:contentDescription="@null" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/timer"
+            android:textSize="@dimen/text_headline"
+            android:textColor="@android:color/white"
+            android:layout_marginStart="@dimen/margin_large"
+            android:layout_marginTop="@dimen/dp_90"
+            tools:ignore="RelativeOverlap" />
+
+        <Button
+            android:id="@+id/btn_seat_text"
+            android:layout_width="@dimen/dp_25"
+            android:layout_height="@dimen/dp_25"
+            android:gravity="end"
+            android:background="@drawable/ic_my_seat"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="@dimen/margin_large"
+            android:layout_marginTop="@dimen/dp_96"
+            tools:ignore="RelativeOverlap" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_65"
+            android:layout_alignParentBottom="true">
+
+            <Button
+                android:id="@+id/btn_timer_end_use"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/dp_50"
+                android:layout_weight="1"
+                android:background="@drawable/bt_round_left"
+                android:layout_gravity="bottom"
+                android:layout_marginStart="@dimen/margin_large"
+                android:layout_marginBottom="@dimen/dp_5"
+                android:text="@string/end_using"
+                android:textSize="@dimen/text_button"
+                android:elevation="@dimen/dp_2"
+                style="@style/Widget.AppCompat.Button"
+                tools:targetApi="lollipop"/>
+
+            <Button
+                android:id="@+id/btn_timer_begin_use"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/dp_50"
+                android:layout_weight="1"
+                android:background="@drawable/bt_round_right"
+                android:layout_gravity="bottom"
+                android:layout_marginEnd="@dimen/margin_large"
+                android:layout_marginBottom="@dimen/dp_5"
+                android:text="@string/start_using"
+                android:textSize="@dimen/text_button"
+                android:textColor="@android:color/white"
+                android:elevation="@dimen/dp_2"
+                style="@style/TextAppearance.AppCompat.Button"
+                tools:targetApi="lollipop" />
+
+            <Button
+                android:id="@+id/btn_timer_leave"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/dp_50"
+                android:layout_weight="1"
+                android:background="@drawable/bt_round_right"
+                android:layout_gravity="bottom"
+                android:layout_marginEnd="@dimen/margin_large"
+                android:layout_marginBottom="@dimen/dp_5"
+                android:text="@string/leave"
+                android:textSize="@dimen/text_button"
+                android:textColor="@android:color/white"
+                android:elevation="@dimen/dp_2"
+                style="@style/TextAppearance.AppCompat.Button"
+                tools:targetApi="lollipop"
+                android:visibility="gone"/>
+
+
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/timer_bg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/waiting_circle">
+
+        <TextView
+            android:id="@+id/tick_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/default_num"
+            android:textSize="@dimen/text_huge"/>
+
+        <Chronometer
+            android:id="@+id/up_chronometer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:format="%s"
+            android:textSize="@dimen/text_huge"
+            android:visibility="gone"/>
+
+    </RelativeLayout>
+
+
+
+</LinearLayout>

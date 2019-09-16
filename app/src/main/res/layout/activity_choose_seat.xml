@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_160"
+        android:background="@color/bg_ViridianGreen"
+        android:clipChildren="false"
+        tools:ignore="UselessParent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/select_seat_title"
+            android:textSize="@dimen/text_headline"
+            android:textColor="@android:color/white"
+            android:layout_marginStart="@dimen/margin_large"
+            android:layout_marginTop="@dimen/dp_60"/>
+
+        <Button
+            android:id="@+id/choose_refresh"
+            android:layout_width="@dimen/dp_30"
+            android:layout_height="@dimen/dp_30"
+            android:background="@drawable/ic_refresh"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="@dimen/margin_large"
+            android:layout_marginTop="@dimen/dp_60"/>
+
+    </RelativeLayout>
+
+    <com.tttangerine.availableseat.view.ChooseSeatView
+        android:id="@+id/choose_seat"
+        android:background="#ffffff"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_160"/>
+
+    <Button
+        android:id="@+id/book_select"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorPrimaryDark"
+        android:text="@string/book_select"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/text_button"/>
+
+    <Button
+        android:id="@+id/select_seat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorPrimary"
+        android:text="@string/select_seat"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/text_button"
+        android:visibility="gone"/>
+
+</RelativeLayout>

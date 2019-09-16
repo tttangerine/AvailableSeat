@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/nav_change_name"
+            android:icon="@drawable/ic_change_name"
+            android:title="@string/nav_change_name"/>
+
+        <item
+            android:id="@+id/nav_change_pw"
+            android:icon="@drawable/ic_change_pw"
+            android:title="@string/nav_change_pw"/>
+
+        <item
+            android:id="@+id/nav_use_info"
+            android:icon="@drawable/ic_fault_info"
+            android:title="@string/nav_use_info"/>
+
+        <item
+            android:id="@+id/nav_app_info"
+            android:icon="@drawable/ic_app_info"
+            android:title="@string/nav_app_info"/>
+
+    </group>
+
+</menu>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#00979c</color>
+    <color name="colorPrimaryDark">#00979c</color>
+    <color name="colorAccent">#99d7e5</color>
+
+    <!--主题色-->
+    <color name="bg_ViridianGreen">#00979c</color>
+    <color name="bg_TurkishSea">#195190</color>
+    <color name="focus_LivingCoral">#fc766a</color>
+    <color name="light_SeaPink">#e198ad</color>
+
+    <!--文字提示色-->
+    <color name="hintGray">#818181</color>
+</resources>
