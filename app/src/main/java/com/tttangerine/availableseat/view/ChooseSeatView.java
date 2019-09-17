@@ -27,6 +27,7 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.Toast;
 
 import com.tttangerine.availableseat.R;
+import com.tttangerine.availableseat.activity.ChooseSeatActivity;
 
 import java.util.ArrayList;
 
@@ -499,6 +500,7 @@ public class ChooseSeatView extends View {
                     case SEAT_TYPE_SELECTED:
                         canvas.drawBitmap(checkedSeatBitmap, tempMatrix, paint);
                         drawText(canvas, i, j, top, left);
+                        //isSelecting = true;
                         break;
                     case SEAT_TYPE_USED:
                         canvas.drawBitmap(usedSeatBitmap, tempMatrix, paint);
@@ -698,11 +700,6 @@ public class ChooseSeatView extends View {
     private int selectedId;
     public int getSelectedId(){ return selectedId; }
     public void setSelectedId(int id){ selectedId = id; }
-
-    private boolean isSelecting = false;
-    public boolean selectingMonitor(){ return isSelecting; }
-    public void selectingSetter(){ isSelecting = true; }
-    //public void selectingCanceler(){ isSelecting = false; }
 
     private void ChooseSeat(int row, int column) {
         selectedId = getID(row, column);
@@ -1116,10 +1113,10 @@ public class ChooseSeatView extends View {
                         if (x >= tempX && x <= maxTemX && y >= tempY && y <= maxTempY) {
                             if (isSeatSelected(i,j)) {
                                 cancelSelect();
-                                isSelecting = false;
                                 if (seatChecker != null) {
                                     seatChecker.unCheck(i, j);
-                                    isSelecting = false;
+                                    //isSelecting = false;
+                                    ChooseSeatActivity.instance.refreshButton(false);
                                 }
                             } else {
                                 if (selectedId != 0) {
@@ -1127,9 +1124,9 @@ public class ChooseSeatView extends View {
                                     return super.onSingleTapConfirmed(e);
                                 } else {
                                     ChooseSeat(i, j);
+                                    ChooseSeatActivity.instance.refreshButton(true);
                                     if (seatChecker != null) {
                                         seatChecker.checked(i, j);
-                                        isSelecting = true;
                                     }
                                 }
                             }

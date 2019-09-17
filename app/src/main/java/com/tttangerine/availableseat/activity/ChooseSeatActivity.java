@@ -29,11 +29,15 @@ import static com.tttangerine.availableseat.db.User.USER_USING;
 
 public class ChooseSeatActivity extends Activity implements View.OnClickListener {
 
+    //创建activity本身的实例，供其他activity调用
+    @SuppressLint("StaticFieldLeak")
+    public static ChooseSeatActivity instance = null;
+
     private ChooseSeatView mChooseSeatView;  //自定义选座视图
     private Button btn_select_seat;
     private Button btn_book_select;
 
-    private String ROOMID;
+    private String ROOM_ID;
     private int btn_type;
 
     private User currentUser;
@@ -48,6 +52,7 @@ public class ChooseSeatActivity extends Activity implements View.OnClickListener
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_seat);
+        instance = this;
         init();
     }
 
@@ -80,9 +85,9 @@ public class ChooseSeatActivity extends Activity implements View.OnClickListener
         currentUser = BmobUser.getCurrentUser(User.class);
 
         //获取intent传递的信息，得到房间信息，获取相应的座位信息
-        ROOMID = getIntent().getStringExtra("room_id");
+        ROOM_ID = getIntent().getStringExtra("room_id");
         BmobQuery<Room> bmobQuery = new BmobQuery<>();
-        bmobQuery.addWhereEqualTo("objectId", ROOMID);
+        bmobQuery.addWhereEqualTo("objectId", ROOM_ID);
         bmobQuery.findObjects(new FindListener<Room>() {
             @Override
             public void done(List<Room> list, BmobException e) {
@@ -96,7 +101,6 @@ public class ChooseSeatActivity extends Activity implements View.OnClickListener
         });
 
         mChooseSeatView = findViewById(R.id.choose_seat);
-        mChooseSeatView.setOnClickListener(this);
         refreshSeatView();
     }
 
@@ -106,7 +110,7 @@ public class ChooseSeatActivity extends Activity implements View.OnClickListener
 
         //联网获取已占用/预约的座位
         Room room = new Room();
-        room.setObjectId(ROOMID);
+        room.setObjectId(ROOM_ID);
         BmobQuery<Seat> seatBmobQuery = new BmobQuery<>();
         seatBmobQuery.addWhereEqualTo("mRoom", new BmobPointer(room));
         seatBmobQuery.findObjects(new FindListener<Seat>() {
@@ -178,7 +182,7 @@ public class ChooseSeatActivity extends Activity implements View.OnClickListener
             @Override
             public void done(final List<Seat> list, BmobException e) {
                 if (list != null){
-                    mChooseSeatView.selectingSetter();
+                    //mChooseSeatView.selectingSetter();
                     mChooseSeatView.setSelectedId(list.get(0).getId());
                     mChooseSeatView.invalidate();
                 }
@@ -188,15 +192,6 @@ public class ChooseSeatActivity extends Activity implements View.OnClickListener
 
     public void onClick(View v){
         switch (v.getId()){
-
-            //处理选座视图点击事件，刷新选座视图及底部按钮
-            case R.id.choose_seat:
-                if (btn_type == 0)
-                    refreshButton(btn_book_select);
-                else if (btn_type == 1)
-                    refreshButton(btn_select_seat);
-                //refreshSeatView();
-                break;
 
             case R.id.choose_refresh:
                 refreshSeatView();
@@ -278,7 +273,7 @@ public class ChooseSeatActivity extends Activity implements View.OnClickListener
     //查询选中的房间中选中的座位
     private BmobQuery<Seat> andQuery(){
         Room room = new Room();
-        room.setObjectId(ROOMID);
+        room.setObjectId(ROOM_ID);
         BmobQuery<Seat> seatQuery1 = new BmobQuery<>();
         seatQuery1.addWhereEqualTo("mRoom", new BmobPointer(room));  //查询的房间
         BmobQuery<Seat> seatQuery2 = new BmobQuery<>();
@@ -294,7 +289,7 @@ public class ChooseSeatActivity extends Activity implements View.OnClickListener
     //更新用户信息
     private void updateUser(Integer STATE_TYPE){
         Room room = new Room();
-        room.setObjectId(ROOMID);
+        room.setObjectId(ROOM_ID);
         currentUser.setRoom(room);
         currentUser.USER_STATE = STATE_TYPE;
         currentUser.update(new UpdateListener() {
@@ -310,7 +305,7 @@ public class ChooseSeatActivity extends Activity implements View.OnClickListener
     //更新房间座位信息（选中座位，空座数-1）
     private void upateRoom(){
         BmobQuery<Room> query = new BmobQuery<>();
-        query.addWhereEqualTo("objectId", ROOMID);
+        query.addWhereEqualTo("objectId", ROOM_ID);
         query.findObjects(new FindListener<Room>() {
             @Override
             public void done(List<Room> list, BmobException e) {
@@ -328,16 +323,11 @@ public class ChooseSeatActivity extends Activity implements View.OnClickListener
     }
 
     //按座位选中状态，更新底部按钮文字、颜色、是否允许点击
-    private void refreshButton(Button btn){
-        setBtnClickable(btn, mChooseSeatView.selectingMonitor());
-        /*
-        if (mChooseSeatView.selectingMonitor()) {
-            setBtnClickable(btn, true);
-            btn.invalidate();
-        } else {
-            setBtnClickable(btn, false);
-            btn.invalidate();
-        }*/
+    public void refreshButton(Boolean clickable){
+        if (btn_type == 0)
+            setBtnClickable(btn_book_select, clickable);
+        else if (btn_type == 1)
+            setBtnClickable(btn_select_seat, clickable);
     }
     private void setBtnClickable(Button btn, boolean clickable) {
         if (clickable){

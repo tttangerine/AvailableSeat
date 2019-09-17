@@ -1,12 +1,15 @@
 package com.tttangerine.availableseat.activity;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.SystemClock;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
@@ -14,8 +17,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
 import com.tttangerine.availableseat.R;
 import com.tttangerine.availableseat.db.Seat;
+import com.tttangerine.availableseat.db.SpSaveModel;
 import com.tttangerine.availableseat.db.User;
 
 import java.util.List;
@@ -31,6 +37,16 @@ import static com.tttangerine.availableseat.db.User.USER_NONE;
 import static com.tttangerine.availableseat.db.User.USER_USING;
 
 public class TimerActivity extends Activity implements View.OnClickListener {
+
+    private int beginTime = 0;  //开始使用次数，第二次点击开始使用时加入时间限制
+    private SharedPreferences sp;  //本地存储时间
+    private SharedPreferences.Editor mEditor;
+    public static final String filename = "LeaveInterval";
+    public static final String key = "LI";  //存储key值
+    public static final int MS_TO_SECOND = 1000;  //毫秒到秒
+    public static final int LEAVE_INTERVAL = 900;  //两次暂离至少间隔900秒，即15分钟
+
+
 
     private RelativeLayout timer_bg;
 
@@ -48,8 +64,7 @@ public class TimerActivity extends Activity implements View.OnClickListener {
     private Chronometer mChronometer;
 
     private CountDownTimer mCountDownTimer = new CountDownTimer
-            (2000000, 1000) {
-            //(1200000, 1000) {
+            (1800000, 1000) {
         @Override
         public void onTick(long millisUntilFinished) {
             if (!TimerActivity.this.isFinishing()){
@@ -112,6 +127,7 @@ public class TimerActivity extends Activity implements View.OnClickListener {
         }
     };
 
+    @SuppressLint("CommitPrefEdits")
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -120,6 +136,9 @@ public class TimerActivity extends Activity implements View.OnClickListener {
         currentUser = BmobUser.getCurrentUser(User.class);
 
         initViews();
+
+        sp = getSharedPreferences(filename, MODE_PRIVATE);
+        mEditor = sp.edit();
     }
 
     private void initViews(){
@@ -199,6 +218,21 @@ public class TimerActivity extends Activity implements View.OnClickListener {
 
             //暂时离开，停止正向学习计时，开启倒计时，更新用户、座位信息
             case R.id.btn_timer_leave:
+                if (beginTime > 1){
+                    String json = sp.getString(key, "");
+                    if (!TextUtils.isEmpty(json)){
+                        SpSaveModel spTime = JSON.parseObject(json, new TypeReference<SpSaveModel>(){});
+                        assert spTime != null;
+                        if ((System.currentTimeMillis()-spTime.getStartTime())/MS_TO_SECOND<spTime.getSaveTime()){
+                            long lastTime = spTime.getSaveTime() -
+                                    (System.currentTimeMillis()-spTime.getStartTime())/MS_TO_SECOND;
+                            long lastMin = lastTime/60;
+                            long lastSec = lastTime%60;
+                            showToast(lastMin+"分钟"+lastSec+"秒"+"后才可以离开座位");
+                            break;
+                        }
+                    }
+                }
 
                 //圆环设为亮色
                 timer_bg.setBackground(getDrawable(R.drawable.waiting_circle));
@@ -251,6 +285,13 @@ public class TimerActivity extends Activity implements View.OnClickListener {
 
             //开始使用，结束倒计时，开始正向学习计时，更新用户、座位信息
             case R.id.btn_timer_begin_use:
+                beginTime++;
+                if (beginTime > 1){
+                    SpSaveModel spTime = new SpSaveModel(LEAVE_INTERVAL, System.currentTimeMillis());
+                    String json = JSON.toJSONString(spTime);
+                    mEditor.putString(key, json);
+                    mEditor.commit();
+                }
 
                 //圆环设为暗色
                 timer_bg.setBackground(getDrawable(R.drawable.used_circle));
@@ -308,6 +349,7 @@ public class TimerActivity extends Activity implements View.OnClickListener {
 
             //结束使用，停止所有计时，更新用户、座位、教室信息
             case R.id.btn_timer_end_use:
+                beginTime = 0;
 
                 //停止倒计时
                 if (downTimerIsStart){
