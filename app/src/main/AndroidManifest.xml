@@ -22,7 +22,7 @@
         <activity
             android:name=".activity.SplashActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoTitle_FullScreen">
+            android:theme="@style/AppTheme.NoActionBar_Fullscreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -30,9 +30,11 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.LoginActivity" />
-        <activity android:name=".activity.ChooseSeatActivity" />
+        <activity
+            android:name=".activity.ChooseSeatActivity"
+            android:launchMode="singleInstance"/>
         <activity android:name=".activity.ChoosePositionActivity" />
-        <activity android:name=".activity.HomepageActivity" />
+        <activity android:name=".activity.HomepageActivity"/>
         <activity
             android:name=".activity.TimerActivity"
             android:configChanges="orientation|keyboardHidden|keyboard"

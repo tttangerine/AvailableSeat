@@ -23,7 +23,7 @@
         android:background="@android:color/white"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHeight_percent="0.2"
+        app:layout_constraintHeight_percent="0.15"
         app:layout_constraintVertical_bias="1">
 
         <LinearLayout

@@ -1,11 +1,13 @@
 package com.tttangerine.availableseat.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -31,7 +33,7 @@ import static com.tttangerine.availableseat.db.User.USER_LEAVING;
 import static com.tttangerine.availableseat.db.User.USER_NONE;
 import static com.tttangerine.availableseat.db.User.USER_USING;
 
-public class SplashActivity extends AppCompatActivity {
+public class SplashActivity extends Activity {
 
     private ImageView bingPicImg;
 
@@ -78,22 +80,22 @@ public class SplashActivity extends AppCompatActivity {
                 if (!BmobUser.isLogin()) {
                     Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
                     startActivity(intent);
-                    finish();
                 } else if (BmobUser.getCurrentUser(User.class).USER_STATE == USER_NONE){
                     Intent intent = new Intent(SplashActivity.this, HomepageActivity.class);
                     startActivity(intent);
-                    finish();
                 } else if (BmobUser.getCurrentUser(User.class).USER_STATE == USER_LEAVING){
                     Intent intent = new Intent(SplashActivity.this, TimerActivity.class);
                     intent.putExtra("timer_type",0);
                     startActivity(intent);
-                    finish();
                 } else if (BmobUser.getCurrentUser(User.class).USER_STATE == USER_USING){
                     Intent intent = new Intent(SplashActivity.this, TimerActivity.class);
                     intent.putExtra("timer_type",1);
                     startActivity(intent);
-                    finish();
                 }
+                getWindow().setFlags(
+                        WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN,
+                        WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
+                finish();
             }
         }, 3000);
 
