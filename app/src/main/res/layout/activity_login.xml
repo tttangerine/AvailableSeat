@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:background="@drawable/bg_login"
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:id="@+id/login_layout_bg">
@@ -50,7 +51,8 @@
             android:textColor="@android:color/black"
             android:textColorHint="@color/hintGray"
             android:textSize="@dimen/text_body"
-            android:inputType="text" />
+            android:inputType="text"
+            tools:ignore="Autofill" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -88,7 +90,8 @@
             android:maxLines="1"
             android:textColor="@android:color/black"
             android:textColorHint="@color/hintGray"
-            android:textSize="@dimen/text_body" />
+            android:textSize="@dimen/text_body"
+            tools:ignore="Autofill" />
 
         <ImageView
             android:id="@+id/iv_see_password"

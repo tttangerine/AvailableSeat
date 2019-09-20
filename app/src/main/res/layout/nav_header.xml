@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="@dimen/dp_180"
+    android:layout_width="match_parent" android:layout_height="@dimen/dp_200"
     android:background="@drawable/bg_nav">
 
     <TextView
@@ -12,7 +12,7 @@
         android:textSize="@dimen/text_headline"
         android:layout_alignParentBottom="true"
         android:layout_marginStart="@dimen/dp_18"
-        android:layout_marginBottom="@dimen/margin_huge"/>
+        android:layout_marginBottom="@dimen/dp_100"/>
 
     <TextView
         android:id="@+id/nav_subtitle"
@@ -23,6 +23,6 @@
         android:textSize="@dimen/text_subheading"
         android:layout_alignParentBottom="true"
         android:layout_marginStart="@dimen/dp_18"
-        android:layout_marginBottom="@dimen/margin_large"/>
+        android:layout_marginBottom="@dimen/margin_huge"/>
 
 </RelativeLayout>

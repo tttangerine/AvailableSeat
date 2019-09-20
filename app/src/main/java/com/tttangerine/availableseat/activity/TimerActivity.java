@@ -11,6 +11,8 @@ import android.os.CountDownTimer;
 import android.os.SystemClock;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.RelativeLayout;
@@ -44,9 +46,11 @@ public class TimerActivity extends Activity implements View.OnClickListener {
     public static final String filename = "LeaveInterval";
     public static final String key = "LI";  //存储key值
     public static final int MS_TO_SECOND = 1000;  //毫秒到秒
+    public static final int MS_TO_MIN = 60000;  //毫秒到分钟
     public static final int LEAVE_INTERVAL = 900;  //两次暂离至少间隔900秒，即15分钟
-
-
+    public static final String faultFile = "FaultFile";
+    public static final String faultKey = "FF";  //存储key值
+    public static final int FAULT_INTERVAL = 4320;  //两次暂离至少间隔4320分钟，即72小时
 
     private RelativeLayout timer_bg;
 
@@ -54,6 +58,7 @@ public class TimerActivity extends Activity implements View.OnClickListener {
     private Button btn_timer_leave;
 
     private TextView tickText;
+    private TextView timerHint;
 
     private User currentUser;
 
@@ -124,12 +129,21 @@ public class TimerActivity extends Activity implements View.OnClickListener {
                 startActivity(intent);
                 finish();
             }
+
+            //记录登出时间
+            SharedPreferences fsp = getSharedPreferences(faultFile, MODE_PRIVATE);
+            SharedPreferences.Editor fEditor = fsp.edit();
+            SpSaveModel spTime = new SpSaveModel(FAULT_INTERVAL, System.currentTimeMillis());
+            String json = JSON.toJSONString(spTime);
+            fEditor.putString(faultKey, json);
+            fEditor.apply();
         }
     };
 
     @SuppressLint("CommitPrefEdits")
     @Override
     public void onCreate(Bundle savedInstanceState){
+        smoothSwitchScreen();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timer);
 
@@ -147,6 +161,7 @@ public class TimerActivity extends Activity implements View.OnClickListener {
          */
         timer_bg = findViewById(R.id.timer_bg);
         tickText = findViewById(R.id.tick_text);
+        timerHint = findViewById(R.id.tv_timer_hint);
         mChronometer = findViewById(R.id.up_chronometer);
         btn_timer_begin_use = findViewById(R.id.btn_timer_begin_use);
         btn_timer_leave = findViewById(R.id.btn_timer_leave);
@@ -162,8 +177,10 @@ public class TimerActivity extends Activity implements View.OnClickListener {
         int timer_type = getIntent().getIntExtra("timer_type", 2);
 
         if (timer_type == 0){
+            showToast("请在倒计时结束前就座");
             //初始化背景
-            timer_bg.setBackground(getDrawable(R.drawable.waiting_circle));
+            timer_bg.setBackground(getDrawable(R.drawable.bg_waiting));
+            timerHint.setText(getResources().getString(R.string.hint_waiting));
             /*
              * 初始化按钮
              */
@@ -177,8 +194,10 @@ public class TimerActivity extends Activity implements View.OnClickListener {
             mCountDownTimer.start();
             downTimerIsStart = true;
         } else if (timer_type == 1){
+            showToast("开始学习计时");
             //初始化背景
-            timer_bg.setBackground(getDrawable(R.drawable.used_circle));
+            timer_bg.setBackground(getDrawable(R.drawable.bg_used));
+            timerHint.setText(getResources().getString(R.string.hint_used));
             /*
              * 初始化按钮
              */
@@ -235,7 +254,8 @@ public class TimerActivity extends Activity implements View.OnClickListener {
                 }
 
                 //圆环设为亮色
-                timer_bg.setBackground(getDrawable(R.drawable.waiting_circle));
+                timer_bg.setBackground(getDrawable(R.drawable.bg_waiting));
+                timerHint.setText(getResources().getString(R.string.hint_waiting));
 
                 //开始使用按钮设为可见，暂时离开按钮设为不可见
                 btn_timer_begin_use.setVisibility(View.VISIBLE);
@@ -243,6 +263,7 @@ public class TimerActivity extends Activity implements View.OnClickListener {
 
                 //开始倒计时，使倒计时可见
                 if (!downTimerIsStart){
+                    showToast("请在倒计时结束前回到座位");
                     mCountDownTimer.start();
                     downTimerIsStart = true;
                     tickText.setVisibility(View.VISIBLE);
@@ -294,7 +315,8 @@ public class TimerActivity extends Activity implements View.OnClickListener {
                 }
 
                 //圆环设为暗色
-                timer_bg.setBackground(getDrawable(R.drawable.used_circle));
+                timer_bg.setBackground(getDrawable(R.drawable.bg_used));
+                timerHint.setText(getResources().getString(R.string.hint_used));
 
                 //开始使用按钮设为不可见，暂时离开按钮设为可见
                 btn_timer_begin_use.setVisibility(View.GONE);
@@ -309,6 +331,7 @@ public class TimerActivity extends Activity implements View.OnClickListener {
 
                 //开始学习计时，使计时可见
                 if (!upTimerIsStart){
+                    showToast("开始学习计时");
                     mChronometer.setVisibility(View.VISIBLE);
                     mChronometer.setBase(SystemClock.elapsedRealtime());
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
@@ -437,6 +460,16 @@ public class TimerActivity extends Activity implements View.OnClickListener {
 
     private void showToast(String msg) {
         Toast.makeText(TimerActivity.this, msg, Toast.LENGTH_SHORT).show();
+    }
+
+    private void smoothSwitchScreen() {
+        ViewGroup rootView = (this.findViewById(android.R.id.content));
+        rootView.setBackground(getDrawable(R.drawable.bg_root));
+        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+        int statusBarHeight = getResources().getDimensionPixelSize(resourceId);
+        rootView.setPadding(0, statusBarHeight, 0, 0);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
     }
 
 }

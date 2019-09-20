@@ -5,6 +5,9 @@
 
     <string name="loading">正在加载数据</string>
 
+    <string name="slogan1">找座位</string>
+    <string name="slogan2">用嘀嗒</string>
+
     <string name="login_view">账号登录</string>
     <string name="create_account">若账号未注册将自动创建</string>
     <string name="account">昵称</string>
@@ -14,6 +17,7 @@
     <string name="change_info">确定修改</string>
 
     <string name="select_seat_title">选座</string>
+    <string name="room_id">%d</string>
     <string name="before_select_seat">请先选座</string>
     <string name="select_seat">确认选座</string>
     <string name="book_select">预约座位</string>
@@ -35,6 +39,8 @@
     <string name="btn_position">座位</string>
     <string name="timer_num">%1$d:%2$d</string>
     <string name="default_num">00:00</string>
+    <string name="hint_waiting">请在倒计时结束前就座</string>
+    <string name="hint_used">正在进行学习计时</string>
 
     <string name="nav_header_title">A</string>
     <string name="nav_header_subtitle">违规次数：%1$d</string>

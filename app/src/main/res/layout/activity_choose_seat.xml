@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/bg_ViridianGreen"
     xmlns:tools="http://schemas.android.com/tools">
 
     <RelativeLayout
@@ -20,11 +21,13 @@
             android:layout_marginStart="@dimen/margin_large"
             android:layout_marginTop="@dimen/dp_60"/>
 
-        <Button
-            android:id="@+id/choose_refresh"
-            android:layout_width="@dimen/dp_30"
-            android:layout_height="@dimen/dp_30"
-            android:background="@drawable/ic_refresh"
+        <TextView
+            android:id="@+id/tv_room_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/room_id"
+            android:textSize="@dimen/text_headline"
+            android:textColor="@android:color/white"
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="@dimen/margin_large"
             android:layout_marginTop="@dimen/dp_60"/>
@@ -37,6 +40,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_160"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="@dimen/margin_large"
+        android:layout_marginBottom="@dimen/dp_78"
+        android:src="@mipmap/ic_compass"
+        tools:ignore="ContentDescription" />
 
     <Button
         android:id="@+id/book_select"

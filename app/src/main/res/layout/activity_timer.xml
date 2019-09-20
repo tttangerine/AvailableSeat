@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@android:color/white">
+    android:background="@color/bg_ViridianGreen">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -14,9 +14,9 @@
 
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="@dimen/dp_30"
-            android:background="@color/bg_ViridianGreen"
+            android:layout_height="@dimen/dp_30"
+            android:layout_alignParentBottom="true"
+            android:background="@android:color/white"
             android:contentDescription="@null" />
 
         <TextView
@@ -92,9 +92,6 @@
                 style="@style/TextAppearance.AppCompat.Button"
                 tools:targetApi="lollipop"
                 android:visibility="gone"/>
-
-
-
         </LinearLayout>
 
     </RelativeLayout>
@@ -103,7 +100,7 @@
         android:id="@+id/timer_bg"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/waiting_circle">
+        android:background="@drawable/bg_waiting">
 
         <TextView
             android:id="@+id/tick_text"
@@ -123,8 +120,18 @@
             android:textSize="@dimen/text_huge"
             android:visibility="gone"/>
 
+
+        <TextView
+            android:id="@+id/tv_timer_hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="@dimen/margin_large"
+            android:text="@string/hint_waiting"
+            android:textSize="@dimen/text_subheading"
+            android:textColor="@color/hintGray"/>
+
     </RelativeLayout>
-
-
 
 </LinearLayout>

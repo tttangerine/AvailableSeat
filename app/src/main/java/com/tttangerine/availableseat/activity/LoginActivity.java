@@ -3,15 +3,21 @@ package com.tttangerine.availableseat.activity;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.text.InputType;
+import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.*;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
 import com.tttangerine.availableseat.R;
+import com.tttangerine.availableseat.db.SpSaveModel;
 import com.tttangerine.availableseat.db.User;
 
 import java.util.List;
@@ -23,6 +29,7 @@ import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
 
+import static com.tttangerine.availableseat.db.User.USER_LEAVING;
 import static com.tttangerine.availableseat.db.User.USER_NONE;
 import static com.tttangerine.availableseat.db.User.USER_USING;
 
@@ -42,6 +49,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 
     @Override
     public void onCreate(Bundle savedInstanceState){
+        smoothSwitchScreen(R.drawable.bg_login);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         initViews();
@@ -64,9 +72,10 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         //接受intent传递的信息，根据修改信息的类型显示布局
         changeType = getIntent().getIntExtra("change_type", 2);
 
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);  //全屏显示
+        //getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);  //全屏显示
         mLinearLayout = findViewById(R.id.login_layout_bg);
         mLinearLayout.setBackground(getDrawable(R.drawable.bg_easter_egg));  //背景
+        smoothSwitchScreen(R.drawable.bg_easter_egg);
         mLoginBtn.setVisibility(View.GONE);
         Button changeInfoBtn = findViewById(R.id.btn_change);
         changeInfoBtn.setOnClickListener(this);
@@ -101,7 +110,9 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_login:
-                login();  //登陆
+                if (!isFault()){
+                    login();  //登陆
+                }
                 break;
 
             case R.id.btn_change:
@@ -143,12 +154,20 @@ public class LoginActivity extends Activity implements View.OnClickListener {
             @Override
             public void done(User bmobUser, BmobException e) {
                 if (e == null) {
-                    if (BmobUser.getCurrentUser(User.class).USER_STATE == USER_NONE) {
+                    if (bmobUser.getFault()>=3){
+                        bmobUser.setFault(0);
+                        bmobUser.update(new UpdateListener() {
+                            @Override
+                            public void done(BmobException e) {}
+                        });
+                    }
+                    if (bmobUser.USER_STATE == USER_NONE) {
                         Intent intent = new Intent(LoginActivity.this, HomepageActivity.class);
                         startActivity(intent);
                         showToast("登录成功");
                         finish();
-                    } else if (BmobUser.getCurrentUser(User.class).USER_STATE == USER_USING) {
+                    } else if ((bmobUser.USER_STATE == USER_USING)
+                    ||(bmobUser.USER_STATE == USER_LEAVING)){
                         Intent intent = new Intent(LoginActivity.this, TimerActivity.class);
                         startActivity(intent);
                         showToast("登录成功");
@@ -305,6 +324,39 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     @Override
     public void onBackPressed() {
         finish();
+    }
+
+
+    public static final String faultFile = "FaultFile";
+    public static final String faultKey = "FF";  //存储key值
+    public static final int MS_TO_MIN = 60000;  //毫秒到分钟
+
+    private Boolean isFault(){
+        SharedPreferences fsp = getSharedPreferences(faultFile, MODE_PRIVATE);
+        String json = fsp.getString(faultKey, "");
+        if (!TextUtils.isEmpty(json)){
+            SpSaveModel spTime = JSON.parseObject(json, new TypeReference<SpSaveModel>(){});
+            assert spTime != null;
+            if ((System.currentTimeMillis()-spTime.getStartTime())/MS_TO_MIN<spTime.getSaveTime()){
+                long lastTime = spTime.getSaveTime() -
+                        (System.currentTimeMillis()-spTime.getStartTime())/MS_TO_MIN;
+                long lastHour = lastTime/60;
+                long lastMin = lastTime%60;
+                showToast("该设备已违规三次，"+lastHour+"小时"+lastMin+"分钟"+"后才可以登录");
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void smoothSwitchScreen(int drawable) {
+        ViewGroup rootView = (this.findViewById(android.R.id.content));
+        rootView.setBackground(getDrawable(drawable));
+        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+        int statusBarHeight = getResources().getDimensionPixelSize(resourceId);
+        rootView.setPadding(0, statusBarHeight, 0, 0);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
     }
 
 }

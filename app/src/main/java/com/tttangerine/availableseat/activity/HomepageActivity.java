@@ -8,10 +8,10 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
@@ -41,10 +41,10 @@ public class HomepageActivity extends Activity implements View.OnClickListener {
 
     @Override
     public void onCreate(Bundle savedInstanceState){
+        smoothSwitchScreen();
         super.onCreate(savedInstanceState);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
         setContentView(R.layout.activity_homepage);
+
         instance = this;
 
         /*
@@ -111,6 +111,20 @@ public class HomepageActivity extends Activity implements View.OnClickListener {
 
         refreshCard();
 
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        refreshUser();
+        refreshCard();
+    }
+
+    @Override
+    protected void onRestart(){
+        super.onRestart();
+        refreshUser();
+        refreshCard();
     }
 
     public void onClick(View v){
@@ -265,4 +279,13 @@ public class HomepageActivity extends Activity implements View.OnClickListener {
         toast.show();
     }
 
+    private void smoothSwitchScreen() {
+        ViewGroup rootView = (this.findViewById(android.R.id.content));
+        rootView.setBackground(getDrawable(R.drawable.bg_root));
+        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+        int statusBarHeight = getResources().getDimensionPixelSize(resourceId);
+        rootView.setPadding(0, statusBarHeight, 0, 0);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+    }
 }

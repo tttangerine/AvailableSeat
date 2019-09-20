@@ -5,7 +5,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.tttangerine.availableseat.R;
@@ -36,6 +39,7 @@ public class ChooseSeatActivity extends Activity implements View.OnClickListener
     private ChooseSeatView mChooseSeatView;  //自定义选座视图
     private Button btn_select_seat;
     private Button btn_book_select;
+    private TextView tv_room_id;
 
     private String ROOM_ID;
     private int btn_type;
@@ -50,6 +54,7 @@ public class ChooseSeatActivity extends Activity implements View.OnClickListener
 
     @Override
     public void onCreate(Bundle savedInstanceState){
+        smoothSwitchScreen();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_seat);
         instance = this;
@@ -58,9 +63,7 @@ public class ChooseSeatActivity extends Activity implements View.OnClickListener
 
     private void init(){
 
-        //刷新按钮
-        Button btn_refresh = findViewById(R.id.choose_refresh);
-        btn_refresh.setOnClickListener(this);
+        tv_room_id = findViewById(R.id.tv_room_id);
 
         //获取intent传递的信息，根据按钮类型决定预约/选座按钮的显示和隐藏
         btn_type = getIntent().getIntExtra("btn_type", 2);
@@ -91,9 +94,12 @@ public class ChooseSeatActivity extends Activity implements View.OnClickListener
         bmobQuery.findObjects(new FindListener<Room>() {
             @Override
             public void done(List<Room> list, BmobException e) {
-                if (list != null)
+                if (list != null){
                     //按房间的行列数更新选座视图
                     mChooseSeatView.setData(list.get(0).getSeatRows(), list.get(0).getSeatColumns());
+                    tv_room_id.setText(String.format(getResources().getString(R.string.room_id),
+                            list.get(0).getId()));
+                }
                 if (e!=null){
                     showToast(e.getMessage());
                 }
@@ -101,10 +107,10 @@ public class ChooseSeatActivity extends Activity implements View.OnClickListener
         });
 
         mChooseSeatView = findViewById(R.id.choose_seat);
-        refreshSeatView();
+        loadSeatView();
     }
 
-    private void refreshSeatView(){
+    private void loadSeatView(){
         usedSeatList.clear();
         waitingSeatList.clear();
 
@@ -182,7 +188,6 @@ public class ChooseSeatActivity extends Activity implements View.OnClickListener
             @Override
             public void done(final List<Seat> list, BmobException e) {
                 if (list != null){
-                    //mChooseSeatView.selectingSetter();
                     mChooseSeatView.setSelectedId(list.get(0).getId());
                     mChooseSeatView.invalidate();
                 }
@@ -192,11 +197,6 @@ public class ChooseSeatActivity extends Activity implements View.OnClickListener
 
     public void onClick(View v){
         switch (v.getId()){
-
-            case R.id.choose_refresh:
-                refreshSeatView();
-                showToast("刷新成功");
-                break;
 
             //选择座位按钮，更新用户使用信息、房间空座信息、座位使用状态……跳转到计时页面
             case R.id.select_seat:
@@ -357,6 +357,16 @@ public class ChooseSeatActivity extends Activity implements View.OnClickListener
             toast.setText(msg);
         }
         toast.show();
+    }
+
+    private void smoothSwitchScreen() {
+        ViewGroup rootView = (this.findViewById(android.R.id.content));
+        rootView.setBackground(getDrawable(R.drawable.bg_root));
+        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+        int statusBarHeight = getResources().getDimensionPixelSize(resourceId);
+        rootView.setPadding(0, statusBarHeight, 0, 0);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
     }
 
 }

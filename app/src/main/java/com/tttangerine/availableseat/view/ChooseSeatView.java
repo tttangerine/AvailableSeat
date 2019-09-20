@@ -54,7 +54,8 @@ public class ChooseSeatView extends View {
      * 设置行号 默认显示 1,2,3....数字
      * @param lineNumbers  行号
      */
-    /*public void setLineNumbers(ArrayList<String> lineNumbers){
+    /*
+    public void setLineNumbers(ArrayList<String> lineNumbers){
         this.lineNumbers = lineNumbers;
         invalidate();
     }*/
@@ -500,7 +501,6 @@ public class ChooseSeatView extends View {
                     case SEAT_TYPE_SELECTED:
                         canvas.drawBitmap(checkedSeatBitmap, tempMatrix, paint);
                         drawText(canvas, i, j, top, left);
-                        //isSelecting = true;
                         break;
                     case SEAT_TYPE_USED:
                         canvas.drawBitmap(usedSeatBitmap, tempMatrix, paint);
@@ -1115,7 +1115,6 @@ public class ChooseSeatView extends View {
                                 cancelSelect();
                                 if (seatChecker != null) {
                                     seatChecker.unCheck(i, j);
-                                    //isSelecting = false;
                                     ChooseSeatActivity.instance.refreshButton(false);
                                 }
                             } else {

@@ -4,14 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/white"
     tools:context=".activity.SplashActivity">
 
     <ImageView
         android:id="@+id/splash_header"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:scaleType="center"
+        android:src="@mipmap/img_splash"
+        android:scaleType="fitXY"
         android:background="@android:color/white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/splash_footer"
         tools:ignore="ContentDescription" />
@@ -53,15 +57,15 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:background="@android:color/white"
-                    android:text="这是一条消息"
-                    android:textSize="@dimen/text_subheading"/>
+                    android:text="@string/slogan1"
+                    android:textSize="@dimen/text_subheading" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:background="@android:color/white"
-                    android:text="这是一条消息"
+                    android:text="@string/slogan2"
                     android:textSize="@dimen/text_subheading"/>
 
             </LinearLayout>

@@ -33,15 +33,20 @@
         <activity
             android:name=".activity.ChooseSeatActivity"
             android:launchMode="singleInstance"/>
-        <activity android:name=".activity.ChoosePositionActivity" />
-        <activity android:name=".activity.HomepageActivity"/>
+        <activity
+            android:name=".activity.ChoosePositionActivity"
+            android:launchMode="singleInstance"/>
+        <activity
+            android:name=".activity.HomepageActivity"
+            android:launchMode="singleInstance"/>
         <activity
             android:name=".activity.TimerActivity"
             android:configChanges="orientation|keyboardHidden|keyboard"
-            android:launchMode="singleInstance"
-            android:excludeFromRecents="true"/>
-        <activity android:name=".activity.UseInfoActivity" />
-        <activity android:name=".activity.AppInfoActivity" />
+            android:launchMode="singleInstance"/>
+        <activity android:name=".activity.UseInfoActivity"
+            android:launchMode="singleInstance" />
+        <activity android:name=".activity.AppInfoActivity"
+            android:launchMode="singleInstance" />
 
         <provider
             android:name="cn.bmob.v3.util.BmobContentProvider"
